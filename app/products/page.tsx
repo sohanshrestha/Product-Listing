@@ -15,6 +15,14 @@ export default function ProductPage() {
   const search = searchParams.get("search") || "";
   const category = searchParams.get("category") || null;
 
+  const rawSortBy = searchParams.get("sortBy");
+  const sortBy =
+    rawSortBy === "price" || rawSortBy === "rating" ? rawSortBy : undefined;
+
+  const rawOrder = searchParams.get("order");
+  const order =
+    rawOrder === "asc" || rawOrder === "desc" ? rawOrder : undefined;
+
   const { data: categories } = useCategories();
 
   const {
@@ -24,7 +32,7 @@ export default function ProductPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useProducts({ search, category });
+  } = useProducts({ search, category, sortBy, sortOrder: order });
 
   const products: Product[] = data?.pages.flatMap((page) => page.data) || [];
 
@@ -49,7 +57,14 @@ export default function ProductPage() {
 
   return (
     <div className="container mx-auto p-4 sm:px-6 lg:px-16">
-      <FilterPanel filters={{ search, category }} categories={categories} />
+      <FilterPanel
+        filters={{
+          search,
+          category,
+          sort: sortBy && order ? `${sortBy}_${order}` : "",
+        }}
+        categories={categories}
+      />
 
       {isLoading ? (
         <div className="flex gap-2 flex-col justify-center items-center h-[70vh]">

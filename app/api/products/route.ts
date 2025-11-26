@@ -14,6 +14,9 @@ export async function GET(req: Request) {
     const page = Number(params.get("page")) || 1;
     const limit = Number(params.get("limit")) || 10;
 
+    const sortBy = params.get("sortBy");
+    const order: 1 | -1 = params.get("order") === "desc" ? -1 : 1;
+
     const filter: Record<string, unknown> = {};
 
     if (search.length > 0) {
@@ -26,9 +29,14 @@ export async function GET(req: Request) {
 
     const skip = (page - 1) * limit;
 
+    const sortOptions: [string, 1 | -1][] = [];
+    if (sortBy === "price") sortOptions.push(["price", order]);
+    if (sortBy === "rating") sortOptions.push(["rating", order]);
+
     const products = await Product.find(filter)
       .skip(skip)
       .limit(limit)
+      .sort(sortOptions)
       .populate("category", "_id name description");
 
     const total = await Product.countDocuments(filter);

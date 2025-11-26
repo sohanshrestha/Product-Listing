@@ -12,12 +12,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { SortDropdown } from "./sort-dropdown";
 
 interface FilterPanelProps {
   categories?: Category[];
   filters: {
     search: string;
     category: string | null;
+    sort: string | null;
   };
 }
 
@@ -58,6 +60,26 @@ export const FilterPanel = ({ categories, filters }: FilterPanelProps) => {
     router.push(`/products?${params.toString()}`);
   };
 
+  const handleSortChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (value) {
+      const [sortBy, order] = value.split("_");
+      params.set("sortBy", sortBy);
+      params.set("order", order);
+    } else {
+      params.delete("sortBy");
+      params.delete("order");
+    }
+
+    const trimmedInput = searchInput.trim();
+    if (trimmedInput) params.set("search", trimmedInput);
+
+    if (filters.category) params.set("category", filters.category);
+
+    router.push(`/products?${params.toString()}`);
+  };
+
   const handleReset = () => {
     setSearchInput("");
     router.push("/products");
@@ -87,6 +109,8 @@ export const FilterPanel = ({ categories, filters }: FilterPanelProps) => {
           ))}
         </SelectContent>
       </Select>
+
+      <SortDropdown selected={filters.sort ?? ""} onChange={handleSortChange} />
 
       <Button variant="outline" onClick={handleReset}>
         Reset

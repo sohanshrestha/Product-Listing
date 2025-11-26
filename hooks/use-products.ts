@@ -1,6 +1,6 @@
 "use client";
 
-import { Filters } from "@/types/filter";
+import { Filters } from "@/types/sort_filter";
 import { Product, ProductApiResponse } from "@/types/product";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 
@@ -13,6 +13,9 @@ export const fetchProducts = async (
 
   if (filters.search) params.append("search", filters.search);
   if (filters.category) params.append("category", filters.category);
+  if (filters.sortBy) params.append("sortBy", filters.sortBy);
+  if (filters.sortOrder) params.append("order", filters.sortOrder);
+
   params.append("page", page.toString());
   params.append("limit", limit.toString());
 
