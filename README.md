@@ -89,3 +89,6 @@ Here is the live link: [LIVE DEMO](https://product-listing-eight-eta.vercel.app)
 ---
 
 ## Screenshots
+<img width="1903" height="1042" alt="image" src="https://github.com/user-attachments/assets/42fa09f9-335a-485b-83d6-9332274e2c26" />
+<img width="1890" height="1030" alt="image" src="https://github.com/user-attachments/assets/a33f6d42-7bf4-4b47-af4c-2e63140e5b37" />
+
