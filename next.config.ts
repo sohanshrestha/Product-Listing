@@ -1,8 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  basePath: "",
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/products",
+        permanent: true,
+      },
+    ];
+  },
+  images: {
+    domains: ["picsum.photos"],
+  },
 };
 
 export default nextConfig;
