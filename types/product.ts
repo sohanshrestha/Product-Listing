@@ -10,6 +10,7 @@ export interface Product {
   stock: number;
   brand: string;
   category: Category;
+  isInCart?: boolean;
   thumbnail: string;
   images: string[];
   tags: string[];

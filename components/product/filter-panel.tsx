@@ -29,9 +29,10 @@ export const FilterPanel = ({ categories, filters }: FilterPanelProps) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
+      const trimmedInput = searchInput.trim();
       const params = new URLSearchParams(searchParams.toString());
 
-      if (searchInput) params.set("search", searchInput);
+      if (trimmedInput) params.set("search", trimmedInput);
       else params.delete("search");
 
       if (filters.category) params.set("category", filters.category);
@@ -45,12 +46,13 @@ export const FilterPanel = ({ categories, filters }: FilterPanelProps) => {
   }, [filters.category, router, searchInput]);
 
   const handleCategoryChange = (value: string) => {
+    const trimmedInput = searchInput.trim();
     const params = new URLSearchParams(searchParams.toString());
 
     if (value) params.set("category", value);
     else params.delete("category");
 
-    if (searchInput) params.set("search", searchInput);
+    if (trimmedInput) params.set("search", trimmedInput);
     else params.delete("search");
 
     router.push(`/products?${params.toString()}`);

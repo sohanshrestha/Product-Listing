@@ -1,4 +1,5 @@
 import dbConnect from "@/lib/mongodb";
+import Cart from "@/models/Cart";
 import Product from "@/models/Product";
 import { NextResponse } from "next/server";
 
@@ -32,8 +33,17 @@ export async function GET(req: Request) {
 
     const total = await Product.countDocuments(filter);
 
+    const cart = await Cart.findOne({});
+    const cartProductIds =
+      cart?.products.map((p: string) => p.toString()) || [];
+
+    const productsWithCartFlag = products.map((p) => ({
+      ...p.toObject(),
+      isInCart: cartProductIds.includes(p._id.toString()),
+    }));
+
     return NextResponse.json({
-      data: products,
+      data: productsWithCartFlag,
       page,
       limit,
       total,

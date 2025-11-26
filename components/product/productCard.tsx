@@ -10,8 +10,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { useToggleCart } from "@/hooks/use-toggleCart";
 
 export const ProductCard = ({ product }: { product: Product }) => {
+  const { mutate: toggleCart, isPending } = useToggleCart();
   return (
     <Card className="w-full border border-gray-200 dark:border-gray-700 py-0 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
       <div className="relative w-full h-64 overflow-hidden">
@@ -68,29 +70,26 @@ export const ProductCard = ({ product }: { product: Product }) => {
         </div>
       </CardContent>
 
-      <CardFooter className="px-4 py-3 flex justify-between items-center">
+      <CardFooter className="px-4 py-3 mb-1 items-center">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button size="sm" variant="outline" className="rounded-lg">
-                View
+              <Button
+                disabled={isPending}
+                onClick={() => toggleCart(product._id)}
+                size="sm"
+                variant={product.isInCart ? "destructive" : "default"}
+                className="rounded-lg hover:cursor-pointer w-full"
+              >
+                {product.isInCart ? "Remove from Cart" : "Add to Cart"}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>View product details</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button size="sm" className="rounded-lg">
-                Add to Cart
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Add this product to your cart</p>
+              {product.isInCart ? (
+                <p>Remove this product from your cart</p>
+              ) : (
+                <p>Add this product to your cart</p>
+              )}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
