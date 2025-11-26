@@ -23,7 +23,7 @@ Users can browse products, filter by category, search by name, sort by price or 
 ## Note About Data / API
 
 I couldn’t find a free public API that supported **pagination, search, category filter, and sort** simultaneously.  
-So, I created **my own dummy data** and seeded it into MongoDB for this project. All product data is served from the database. You can view the live project [here](https://product-listing-eight-eta.vercel.app/products).
+So, I created **my own dummy data** and seeded it into MongoDB for this project. All product data is served from the database. You can view the live project [here](https://product-listing-eight-eta.vercel.app).
 
 ---
 
@@ -84,7 +84,7 @@ npm run dev
 ---
 
 ## Live Demo
-Here is the live link: [LIVE DEMO](https://product-listing-eight-eta.vercel.app/products)
+Here is the live link: [LIVE DEMO](https://product-listing-eight-eta.vercel.app)
 
 ---
 
