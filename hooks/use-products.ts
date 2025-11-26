@@ -1,28 +1,44 @@
 "use client";
 
 import { Filters } from "@/types/filter";
-import { Product } from "@/types/product";
-import { useQuery } from "@tanstack/react-query";
+import { Product, ProductApiResponse } from "@/types/product";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 
-const fetchProducts = async (filters: Filters): Promise<Product[]> => {
+export const fetchProducts = async (
+  filters: Filters,
+  page: number = 1,
+  limit: number = 10
+): Promise<ProductApiResponse> => {
   const params = new URLSearchParams();
 
   if (filters.search) params.append("search", filters.search);
   if (filters.category) params.append("category", filters.category);
+  params.append("page", page.toString());
+  params.append("limit", limit.toString());
 
   const res = await fetch(`/api/products?${params.toString()}`);
-
   if (!res.ok) throw new Error("Failed to fetch products");
 
-  const data: Product[] = await res.json();
+  const data: ProductApiResponse = await res.json();
   return data;
 };
 
 export const useProducts = (filters: Filters) => {
-  return useQuery<Product[], Error>({
+  const query = useInfiniteQuery<ProductApiResponse, Error>({
     queryKey: ["products", filters],
-    queryFn: () => fetchProducts(filters),
+    queryFn: ({ pageParam }) =>
+      fetchProducts(filters, typeof pageParam === "number" ? pageParam : 1),
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.page + 1 : undefined,
+    initialPageParam: 1,
     staleTime: 1000 * 60 * 2,
     refetchOnWindowFocus: false,
   });
+
+  const products: Product[] =
+    (query.data as InfiniteData<ProductApiResponse>)?.pages.flatMap(
+      (page) => page.data
+    ) || [];
+
+  return { ...query, products };
 };

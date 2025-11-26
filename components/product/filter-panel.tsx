@@ -62,7 +62,7 @@ export const FilterPanel = ({ categories, filters }: FilterPanelProps) => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 mb-6 items-center">
+    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 px-4 w-full flex-wrap">
       <Input
         placeholder="Search products..."
         value={searchInput}

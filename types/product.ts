@@ -18,8 +18,9 @@ export interface Product {
 }
 
 export interface ProductApiResponse {
-  products: Product[];
+  data: Product[];
   total: number;
-  skip: number;
+  page: number;
   limit: number;
+  hasMore: boolean;
 }
